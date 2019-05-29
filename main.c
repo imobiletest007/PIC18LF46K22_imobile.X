@@ -181,15 +181,13 @@ void main(void)
                 gx1 = (int)gx;
                 gy1 = (int)gy;
                 gz1 = (int)gz;
-                dx = (gx2-gx1); dx *= dx;
-                dy = (gy2-gy1); dy *= dy;
-                dz = (gz2-gz1); dz *= dz;
+                dx = (gx2-gx1); dx *= 2*dx;
+                dy = (gy2-gy1); dy *= 2*dy;
+                dz = (gz2-gz1); dz *= 2*dz;
                 last_sensor = (last_sensor*3 + dx+dy+dz) / 4;
                 gx2 = gx1; gy2 = gy1; gz2 = gz1;
-//                if (dx > 0 || dy > 0 || dz > 0) {
-                    pwm_light(last_sensor);
-                    if (!pause) printf("sensor = %d (%d, %d, %d)\r\n", last_sensor, dx, dy, dz);
-//                }
+                pwm_light(last_sensor);
+                if (!pause) printf("sensor = %d (%d, %d, %d)\r\n", last_sensor, dx, dy, dz);
             }
         }
     }
