@@ -83,7 +83,7 @@ int gx2=0, gy2=0, gz2=0;
 int dx=0, dy=0, dz=0;
 
 int light=5;
-int duty[11] = { 499, 495, 480, 459, 409, 359, 299, 249, 199, 99, 0 };
+int duty[11] = { 499, 495, 480, 459, 409, 359, 299, 249, 199, 99, 2 };
 void pwm_light(int idx) {
     if (idx < 0) idx = 0;
     else if (idx > 10) idx = 10;
@@ -146,7 +146,10 @@ static void UART_Show_Version(void)
     printf("Keyboard Type H : LED ON   Type L: LED OFF \r\n");
 }
 
-int last_sensor = 0;
+int last_sensor = 0, delay_count=0;
+
+uint8_t max_mode = 2, mode = 0;
+uint8_t last_light = 0;
 void g_sensor() {
     if (acc_sensor_get_acc()) {
         acc_sensor_read_status();
@@ -159,9 +162,29 @@ void g_sensor() {
             dx = (gx2-gx1); dx *= 3*dx;
             dy = (gy2-gy1); dy *= 3*dy;
             dz = (gz2-gz1); dz *= 3*dz;
-            last_sensor = (last_sensor*3 + dx+dy+dz) / 4;
             gx2 = gx1; gy2 = gy1; gz2 = gz1;
-            pwm_light(last_sensor);
+            last_sensor = (last_sensor*3 + dx+dy+dz) / 4;
+
+            switch(mode) {
+                case 0: { // ????????????
+                    pwm_light(last_sensor);
+                    break;
+                }
+                case 1: { // ?????????????????
+                    if (last_sensor > 0) {
+                        last_light = 10;
+                        delay_count = 30;
+                    } else {
+                        --delay_count;
+                        if (delay_count == 0) {
+                            delay_count = 5;
+                            if (last_light > 0)
+                                --last_light;
+                        }
+                    }
+                    pwm_light(last_light);
+                }
+            }
             if (!pause) printf("sensor = %d (%d, %d, %d)\r\n", last_sensor, dx, dy, dz);
         }
     }
@@ -176,20 +199,22 @@ void main(void)
 
     g_sensor_initial();//sleep ok
     wake_up_initial();
-//    UART_Show_Version();
+    UART_Show_Version();
 
     motion_sensor_write_data(0xC8,MOTION_SENSOR_INT_CTRL_REG1);	//enable all INT1 interrupt funs
     motion_sensor_write_data(0x00,MOTION_SENSOR_ATH);	//enable all INT1 interrupt funs    
 
     while (1) {
-//        UART_cmd();
+        UART_cmd();
         if (buttonUpF == 1) {
             buttonUpF = 0;
+            mode = (mode+1)%max_mode;
             printf("ButtonUp\r\n");
         }
         if (buttonDnF == 1) {
             pause = !pause;
             buttonDnF = 0;
+            mode = (mode+max_mode-1)%max_mode;
             printf("ButtonDn\r\n");
         }
         g_sensor();
