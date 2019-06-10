@@ -55,6 +55,14 @@ void  INTERRUPT_Initialize (void)
 
     // Assign peripheral interrupt priority vectors
 
+    // Interrupt INT0I has no priority bit. It will always be called from the High Interrupt Vector
+
+    // INT1I - high priority
+    INTCON3bits.INT1IP = 1;
+
+    // INT2I - high priority
+    INTCON3bits.INT2IP = 1;
+
     // TXI - high priority
     IPR1bits.TX1IP = 1;
 
@@ -72,12 +80,6 @@ void  INTERRUPT_Initialize (void)
 
     // RCI - high priority
     IPR3bits.RC2IP = 1;
-
-   // INT1I - low priority
-    INTCON3bits.INT1IP = 0;  
-    
-   // INT2I - low priority
-    INTCON3bits.INT2IP = 0;  
     
     // ADI - low priority
     IPR1bits.ADIP = 0;
@@ -86,44 +88,32 @@ void  INTERRUPT_Initialize (void)
 void __interrupt(high_priority) INTERRUPT_InterruptManagerHigh (void)
 {
    // interrupt handler
-    if(PIE1bits.TX1IE == 1 && PIR1bits.TX1IF == 1)
-    {
+    if(INTCONbits.INT0IE == 1 && INTCONbits.INT0IF == 1) {
+        INT0_ISR();
+    }
+    else if(INTCON3bits.INT1IE == 1 && INTCON3bits.INT1IF == 1) {
+        INT1_ISR();
+    }
+    else if(INTCON3bits.INT2IE == 1 && INTCON3bits.INT2IF == 1) {
+        INT2_ISR();
+    }
+    else if(PIE1bits.TX1IE == 1 && PIR1bits.TX1IF == 1) {
         EUSART1_Transmit_ISR();
     }
-    else if(PIE1bits.RC1IE == 1 && PIR1bits.RC1IF == 1)
-    {
+    else if(PIE1bits.RC1IE == 1 && PIR1bits.RC1IF == 1) {
         EUSART1_Receive_ISR();
     }
-    else if(PIE1bits.TMR1IE == 1 && PIR1bits.TMR1IF == 1)
-    {
+    else if(PIE1bits.TMR1IE == 1 && PIR1bits.TMR1IF == 1) {
         TMR1_ISR();
     }
-    else if(INTCONbits.INT0IE == 1 && INTCONbits.INT0IF == 1) 
-    {
-        PIN_MANAGER_IOC();
-    }
-      else if(INTCON3bits.INT1IE == 1 && INTCON3bits.INT1IF == 1) 
-    {
-        PIN_MANAGER_IOC();
-    }
-      else if(INTCON3bits.INT2IE == 1 && INTCON3bits.INT2IF == 1) 
-    {
+    else if(INTCONbits.RBIE == 1 && INTCONbits.RBIF == 1) {
         PIN_MANAGER_IOC();
     }
 }
 
 void __interrupt(low_priority) INTERRUPT_InterruptManagerLow (void)
 {
-    // interrupt handler
-     if(INTCON3bits.INT2IE == 1 && INTCON3bits.INT2IF == 1)
-    {
-        INT2_ISR();
-    }
-    else if(INTCON3bits.INT1IE == 1 && INTCON3bits.INT1IF == 1)
-    {
-        INT1_ISR();
-    }
-    else  if(PIE1bits.ADIE == 1 && PIR1bits.ADIF == 1)
+    if(PIE1bits.ADIE == 1 && PIR1bits.ADIF == 1)
     {
         ADC_ISR();
     }

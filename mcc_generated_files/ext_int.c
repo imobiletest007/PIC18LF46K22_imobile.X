@@ -101,13 +101,8 @@ void INT2_ISR(void)
 /**
   Callback function for EXT_INT2 - INT2
 */
-//extern void RS232_Disable (void);
 void INT2_CallBack(void)
 {
-    
-   
-//    EXT_INT2_InterruptDisable();  
-//     RS232_Disable ();
     // Add your custom callback code here
     if(INT2_InterruptHandler)
     {
@@ -193,7 +188,7 @@ void EXT_INT_Initialize(void)
      * Enable the interrupt, if enabled in the UI. 
      ********/
     EXT_INT1_InterruptFlagClear();   
-    EXT_INT1_fallingEdgeSet();    
+    EXT_INT1_risingEdgeSet();    
     // Set Default Interrupt Handler
     INT1_SetInterruptHandler(INT1_DefaultInterruptHandler);
     EXT_INT1_InterruptEnable();      
@@ -206,7 +201,7 @@ void EXT_INT_Initialize(void)
      * Enable the interrupt, if enabled in the UI. 
      ********/
     EXT_INT2_InterruptFlagClear();   
-    EXT_INT2_fallingEdgeSet();    
+    EXT_INT2_risingEdgeSet();    
     // Set Default Interrupt Handler
     INT2_SetInterruptHandler(INT2_DefaultInterruptHandler);
     EXT_INT2_InterruptEnable();      
@@ -219,7 +214,7 @@ void EXT_INT_Initialize(void)
      * Enable the interrupt, if enabled in the UI. 
      ********/
     EXT_INT0_InterruptFlagClear();   
-    EXT_INT0_fallingEdgeSet();    
+    EXT_INT0_risingEdgeSet();    
     // Set Default Interrupt Handler
     INT0_SetInterruptHandler(INT0_DefaultInterruptHandler);
     EXT_INT0_InterruptEnable();      
