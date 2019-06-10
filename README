@@ -1,0 +1,2 @@
+原始來源請見 ~/src/gitlab/imobile-src/TSMC/Microchip/Jason/PIC18LF46K22_imobile.X
+我的感覺，UART_MultiUART.c　才是 main entry 而不是 main.c

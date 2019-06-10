@@ -181,9 +181,9 @@ void main(void)
                 gx1 = (int)gx;
                 gy1 = (int)gy;
                 gz1 = (int)gz;
-                dx = (gx2-gx1); dx *= 2*dx;
-                dy = (gy2-gy1); dy *= 2*dy;
-                dz = (gz2-gz1); dz *= 2*dz;
+                dx = (gx2-gx1); dx *= 3*dx;
+                dy = (gy2-gy1); dy *= 3*dy;
+                dz = (gz2-gz1); dz *= 3*dz;
                 last_sensor = (last_sensor*3 + dx+dy+dz) / 4;
                 gx2 = gx1; gy2 = gy1; gz2 = gz1;
                 pwm_light(last_sensor);
