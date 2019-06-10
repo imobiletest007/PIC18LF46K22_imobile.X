@@ -70,6 +70,9 @@ void g_sensor_initial(void);
 void wake_up_initial(void);
 static void UART_Show_Version(void);
 
+unsigned char buttonUpF = 0;
+unsigned char buttonDnF = 0;
+
 #define LED_OFF    M_INDICATOR_SetHigh
 #define LED_ON     M_INDICATOR_SetLow
 #define LED_FLASH  M_INDICATOR_Toggle
@@ -87,7 +90,7 @@ void pwm_light(int idx) {
     if (idx == 0) duty[0] = 501; //  A BUG
     EPWM1_LoadDutyValue(duty[idx]);
 }
-void UART_Demo_Command_INT(void)
+void UART_cmd(void)
 {
     uint8_t temp;
     if(EUSART2_is_rx_ready())
@@ -144,7 +147,25 @@ static void UART_Show_Version(void)
 }
 
 int last_sensor = 0;
-
+void g_sensor() {
+    if (acc_sensor_get_acc()) {
+        acc_sensor_read_status();
+        acc_sensor_clear_interrupt_status(); // it can read G-sensor INT 
+        if(tmr1_flag_100ms) {
+            tmr1_flag_100ms = 0;
+            gx1 = (int)gx;
+            gy1 = (int)gy;
+            gz1 = (int)gz;
+            dx = (gx2-gx1); dx *= 3*dx;
+            dy = (gy2-gy1); dy *= 3*dy;
+            dz = (gz2-gz1); dz *= 3*dz;
+            last_sensor = (last_sensor*3 + dx+dy+dz) / 4;
+            gx2 = gx1; gy2 = gy1; gz2 = gz1;
+            pwm_light(last_sensor);
+            if (!pause) printf("sensor = %d (%d, %d, %d)\r\n", last_sensor, dx, dy, dz);
+        }
+    }
+}
 void main(void)
 {
     SYSTEM_Initialize();
@@ -155,41 +176,23 @@ void main(void)
 
     g_sensor_initial();//sleep ok
     wake_up_initial();
-    UART_Show_Version();
-
-    /* ?????????????? TMR1 ???, ????
-    TRISCbits.TRISC0 = 0;
-    LATCbits.LATC0 =0;
-    __delay_ms(10);
-    LATCbits.LATC0 =1;
-    __delay_ms(10);
-    LATCbits.LATC0 =0;
-    NOP();
-    NOP();     
-     */
+//    UART_Show_Version();
 
     motion_sensor_write_data(0xC8,MOTION_SENSOR_INT_CTRL_REG1);	//enable all INT1 interrupt funs
     motion_sensor_write_data(0x00,MOTION_SENSOR_ATH);	//enable all INT1 interrupt funs    
 
     while (1) {
-        UART_Demo_Command_INT();
-        if (acc_sensor_get_acc()) {
-            acc_sensor_read_status();
-            acc_sensor_clear_interrupt_status(); // it can read G-sensor INT 
-            if(tmr1_flag_100ms) {
-                tmr1_flag_100ms = 0;
-                gx1 = (int)gx;
-                gy1 = (int)gy;
-                gz1 = (int)gz;
-                dx = (gx2-gx1); dx *= 3*dx;
-                dy = (gy2-gy1); dy *= 3*dy;
-                dz = (gz2-gz1); dz *= 3*dz;
-                last_sensor = (last_sensor*3 + dx+dy+dz) / 4;
-                gx2 = gx1; gy2 = gy1; gz2 = gz1;
-                pwm_light(last_sensor);
-                if (!pause) printf("sensor = %d (%d, %d, %d)\r\n", last_sensor, dx, dy, dz);
-            }
+//        UART_cmd();
+        if (buttonUpF == 1) {
+            buttonUpF = 0;
+            printf("ButtonUp\r\n");
         }
+        if (buttonDnF == 1) {
+            pause = !pause;
+            buttonDnF = 0;
+            printf("ButtonDn\r\n");
+        }
+        g_sensor();
     }
 }
 void putrs2USART(const char *data)

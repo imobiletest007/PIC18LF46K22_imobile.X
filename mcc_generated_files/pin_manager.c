@@ -90,7 +90,7 @@ void PIN_MANAGER_Initialize(void)
 
 void PIN_MANAGER_IOC(void)
 {
-#if 1
+#if 0
     INTCONbits.RBIF = 0;
 #else
     if(INTCONbits.INT0IF == 1)

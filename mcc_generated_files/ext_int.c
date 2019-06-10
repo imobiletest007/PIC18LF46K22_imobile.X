@@ -31,14 +31,14 @@
 
 //***User Area End->code: Add External Interrupt handler specific headers
 extern unsigned char buttonUpF;
-extern unsigned char buttonDownF;
+extern unsigned char buttonDnF;
 /**
    Section: External Interrupt Handlers
  */
 // INTn Dynamic Interrupt Handlers 
+void (*INT0_InterruptHandler)(void);
 void (*INT1_InterruptHandler)(void);
 void (*INT2_InterruptHandler)(void);
-void (*INT0_InterruptHandler)(void);
 
 /**
   Interrupt Handler for EXT_INT1 - INT1
@@ -60,8 +60,8 @@ void INT1_ISR(void)
 */
 void INT1_CallBack(void)
 {
-   if(!buttonDownF) 
-    buttonDownF=1;
+   if(!buttonDnF) 
+    buttonDnF=1;
     // Add your custom callback code here
     if(INT1_InterruptHandler)
     {
@@ -101,13 +101,13 @@ void INT2_ISR(void)
 /**
   Callback function for EXT_INT2 - INT2
 */
-extern void RS232_Disable (void);
+//extern void RS232_Disable (void);
 void INT2_CallBack(void)
 {
     
    
-    EXT_INT2_InterruptDisable();  
-     RS232_Disable ();
+//    EXT_INT2_InterruptDisable();  
+//     RS232_Disable ();
     // Add your custom callback code here
     if(INT2_InterruptHandler)
     {
