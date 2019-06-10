@@ -116,11 +116,11 @@ void SYSTEM_Initialize(void)
     OSCILLATOR_Initialize();
     SPI1_Initialize();
     SPI2_Initialize();
-    EXT_INT_Initialize();
     ADC_Initialize();
     EPWM1_Initialize();
     TMR2_Initialize();
     TMR1_Initialize();
+    EXT_INT_Initialize();
     EUSART1_Initialize();
     EUSART2_Initialize();
 }

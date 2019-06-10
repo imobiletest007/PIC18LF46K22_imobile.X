@@ -156,8 +156,7 @@ uint8_t TMR1_CheckGateValueStatus(void)
 {
     return T1GCONbits.T1GVAL;
 }
-uint8_t tmr1_flag_1s=0;
-uint8_t tmr1_flag_100ms=0;
+uint8_t tmr1_flag_25ms=0;
 void TMR1_ISR(void)
 {
     static volatile unsigned int CountCallBack = 0;
@@ -168,13 +167,12 @@ void TMR1_ISR(void)
     // Write to the Timer1 register
     TMR1H = (timer1ReloadVal >> 8);
     TMR1L = (uint8_t) timer1ReloadVal;
-    tmr1_flag_100ms=1;
+    tmr1_flag_25ms=1;
     // callback function - called every 10th pass
     if (++CountCallBack >= TMR1_INTERRUPT_TICKER_FACTOR)
     {
         // ticker function call
         TMR1_CallBack();
-        tmr1_flag_1s=1;
         // reset ticker counter
         CountCallBack = 0;
     }

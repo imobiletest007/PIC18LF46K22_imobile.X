@@ -52,8 +52,7 @@
 
 uint8_t g_vison=0x00;
 uint8_t str1[160];
-extern uint8_t tmr1_flag_1s;
-extern uint8_t tmr1_flag_100ms;
+extern uint8_t tmr1_flag_25ms;
 
 extern uint8_t status1_value;
 extern uint8_t status2_value;
@@ -154,8 +153,8 @@ void g_sensor() {
     if (acc_sensor_get_acc()) {
         acc_sensor_read_status();
         acc_sensor_clear_interrupt_status(); // it can read G-sensor INT 
-        if(tmr1_flag_100ms) {
-            tmr1_flag_100ms = 0;
+        if(tmr1_flag_25ms) {
+            tmr1_flag_25ms = 0;
             gx1 = (int)gx;
             gy1 = (int)gy;
             gz1 = (int)gz;
@@ -173,11 +172,11 @@ void g_sensor() {
                 case 1: { // ?????????????????
                     if (last_sensor > 0) {
                         last_light = 10;
-                        delay_count = 30;
+                        delay_count = 120;
                     } else {
                         --delay_count;
                         if (delay_count == 0) {
-                            delay_count = 5;
+                            delay_count = 20;
                             if (last_light > 0)
                                 --last_light;
                         }
@@ -209,13 +208,13 @@ void main(void)
         if (buttonUpF == 1) {
             buttonUpF = 0;
             mode = (mode+1)%max_mode;
-            printf("ButtonUp\r\n");
+            printf("ButtonUp mode=%d\r\n", mode);
         }
         if (buttonDnF == 1) {
             pause = !pause;
             buttonDnF = 0;
             mode = (mode+max_mode-1)%max_mode;
-            printf("ButtonDn\r\n");
+            printf("ButtonDn mode=%d\r\n", mode);
         }
         g_sensor();
     }
