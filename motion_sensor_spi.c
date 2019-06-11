@@ -23,7 +23,7 @@
 
 #include	"motion_sensor_spi.h"  
 #define uint16_t_t unsigned int
-#define uint8_t unsigned char
+//#define uint8_t unsigned char
 #include "mcc_generated_files/mcc.h"
 /*************************************************************************
 * FUNCTION

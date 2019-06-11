@@ -1,0 +1,420 @@
+From 33ed05603b90a3869045c3effd7e16712ed90ed4 Mon Sep 17 00:00:00 2001
+From: des83111 <des83111@gmail.com>
+Date: Tue, 11 Jun 2019 17:35:59 +0800
+Subject: [PATCH] The First Commit
+
+---
+ motion_sensor_custom.c                |  2 +-
+ motion_sensor_custom.h                |  4 +-
+ motion_sensor_spi.c                   |  2 +-
+ motion_sensor_spi.h                   |  4 +-
+ nbproject/Makefile-default.mk         | 78 +++++++++++++--------------
+ nbproject/Makefile-genesis.properties |  8 +--
+ nbproject/Makefile-local-default.mk   | 25 ++++-----
+ nbproject/configurations.xml          | 28 +++++++---
+ nbproject/private/configurations.xml  |  4 +-
+ nbproject/private/private.xml         |  4 +-
+ 10 files changed, 90 insertions(+), 69 deletions(-)
+
+diff --git a/motion_sensor_custom.c b/motion_sensor_custom.c
+index 9b3486b..49901c9 100644
+--- a/motion_sensor_custom.c
++++ b/motion_sensor_custom.c
+@@ -20,7 +20,7 @@
+  ****************************************************************************/
+ #define MOTION_SENSOR_SUPPORT
+ #define uint16_t unsigned int
+-#define uint8_t unsigned char
++//#define uint8_t unsigned char
+ #ifdef MOTION_SENSOR_SUPPORT
+ 
+ #include "motion_sensor_custom.h"   
+diff --git a/motion_sensor_custom.h b/motion_sensor_custom.h
+index 4001bf8..63d2cf0 100644
+--- a/motion_sensor_custom.h
++++ b/motion_sensor_custom.h
+@@ -20,8 +20,10 @@
+  ****************************************************************************/
+ #ifndef _MOTION_SENSOR_CUSTOM_H
+ #define _MOTION_SENSOR_CUSTOM_H
++#include <stdint.h>
++
+ #define uint16_t unsigned int
+-#define uint8_t unsigned char
++//#define uint8_t unsigned char
+ /* Gsensor slave address and read write bit */
+ #define MOTION_SENSOR_ADDRESS    		0x1F 	// when "PIN-ADDR" connect to "IO_VDD"
+ // #define MOTION_SENSOR_ADDRESS    	0x1E 	// when "PIN-ADDR" connect to "GND"
+diff --git a/motion_sensor_spi.c b/motion_sensor_spi.c
+index 874cc18..2a1f14b 100644
+--- a/motion_sensor_spi.c
++++ b/motion_sensor_spi.c
+@@ -23,7 +23,7 @@
+ 
+ #include	"motion_sensor_spi.h"  
+ #define uint16_t_t unsigned int
+-#define uint8_t unsigned char
++//#define uint8_t unsigned char
+ #include "mcc_generated_files/mcc.h"
+ /*************************************************************************
+ * FUNCTION
+diff --git a/motion_sensor_spi.h b/motion_sensor_spi.h
+index dcfe95f..f0ae8f9 100644
+--- a/motion_sensor_spi.h
++++ b/motion_sensor_spi.h
+@@ -21,6 +21,7 @@
+ 
+ #ifndef MOTION_SENSOR_SPI_H
+ #define MOTION_SENSOR_SPI_H
++#include <stdint.h>
+ //#define a0                LATCbits.LATC0
+ //#define res               LATCbits.LATC1
+ //#define cs                LATCbits.LATC2
+@@ -49,7 +50,8 @@
+ #endif
+ 
+ #define uint16_t unsigned int
+-#define uint8_t unsigned char
++//#define uint8_t unsigned char
++
+ void MS_Delay(uint16_t value);
+ void motion_senosr_interface_init(void);
+ void motion_sensor_send_byte(uint8_t send_byte);
+diff --git a/nbproject/Makefile-default.mk b/nbproject/Makefile-default.mk
+index f4ef77e..0a8cf3f 100644
+--- a/nbproject/Makefile-default.mk
++++ b/nbproject/Makefile-default.mk
+@@ -19,7 +19,7 @@ endif
+ endif
+ 
+ # Environment
+-MKDIR=mkdir -p
++MKDIR=gnumkdir -p
+ RM=rm -f 
+ MV=mv 
+ CP=cp 
+@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
+ DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
+ 
+ # Source Files Quoted if spaced
+-SOURCEFILES_QUOTED_IF_SPACED=mcc_generated_files/ext_int.c mcc_generated_files/pin_manager.c mcc_generated_files/mcc.c mcc_generated_files/interrupt_manager.c mcc_generated_files/eusart2.c mcc_generated_files/eusart1.c mcc_generated_files/adc.c mcc_generated_files/spi2.c mcc_generated_files/tmr1.c mcc_generated_files/spi1.c mcc_generated_files/memory.c main.c motion_sensor_custom.c motion_sensor_spi.c UART_MultiUART.c mcc_generated_files/tmr2.c mcc_generated_files/epwm1.c
++SOURCEFILES_QUOTED_IF_SPACED=mcc_generated_files/ext_int.c mcc_generated_files/pin_manager.c mcc_generated_files/mcc.c mcc_generated_files/interrupt_manager.c mcc_generated_files/eusart2.c mcc_generated_files/eusart1.c mcc_generated_files/adc.c mcc_generated_files/spi2.c mcc_generated_files/tmr1.c mcc_generated_files/spi1.c mcc_generated_files/memory.c mcc_generated_files/tmr2.c mcc_generated_files/epwm1.c main.c motion_sensor_custom.c motion_sensor_spi.c UART_MultiUART.c
+ 
+ # Object Files Quoted if spaced
+-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/mcc_generated_files/ext_int.p1 ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1 ${OBJECTDIR}/mcc_generated_files/eusart2.p1 ${OBJECTDIR}/mcc_generated_files/eusart1.p1 ${OBJECTDIR}/mcc_generated_files/adc.p1 ${OBJECTDIR}/mcc_generated_files/spi2.p1 ${OBJECTDIR}/mcc_generated_files/tmr1.p1 ${OBJECTDIR}/mcc_generated_files/spi1.p1 ${OBJECTDIR}/mcc_generated_files/memory.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/motion_sensor_custom.p1 ${OBJECTDIR}/motion_sensor_spi.p1 ${OBJECTDIR}/UART_MultiUART.p1 ${OBJECTDIR}/mcc_generated_files/tmr2.p1 ${OBJECTDIR}/mcc_generated_files/epwm1.p1
+-POSSIBLE_DEPFILES=${OBJECTDIR}/mcc_generated_files/ext_int.p1.d ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d ${OBJECTDIR}/mcc_generated_files/mcc.p1.d ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1.d ${OBJECTDIR}/mcc_generated_files/eusart2.p1.d ${OBJECTDIR}/mcc_generated_files/eusart1.p1.d ${OBJECTDIR}/mcc_generated_files/adc.p1.d ${OBJECTDIR}/mcc_generated_files/spi2.p1.d ${OBJECTDIR}/mcc_generated_files/tmr1.p1.d ${OBJECTDIR}/mcc_generated_files/spi1.p1.d ${OBJECTDIR}/mcc_generated_files/memory.p1.d ${OBJECTDIR}/main.p1.d ${OBJECTDIR}/motion_sensor_custom.p1.d ${OBJECTDIR}/motion_sensor_spi.p1.d ${OBJECTDIR}/UART_MultiUART.p1.d ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d
++OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/mcc_generated_files/ext_int.p1 ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1 ${OBJECTDIR}/mcc_generated_files/eusart2.p1 ${OBJECTDIR}/mcc_generated_files/eusart1.p1 ${OBJECTDIR}/mcc_generated_files/adc.p1 ${OBJECTDIR}/mcc_generated_files/spi2.p1 ${OBJECTDIR}/mcc_generated_files/tmr1.p1 ${OBJECTDIR}/mcc_generated_files/spi1.p1 ${OBJECTDIR}/mcc_generated_files/memory.p1 ${OBJECTDIR}/mcc_generated_files/tmr2.p1 ${OBJECTDIR}/mcc_generated_files/epwm1.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/motion_sensor_custom.p1 ${OBJECTDIR}/motion_sensor_spi.p1 ${OBJECTDIR}/UART_MultiUART.p1
++POSSIBLE_DEPFILES=${OBJECTDIR}/mcc_generated_files/ext_int.p1.d ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d ${OBJECTDIR}/mcc_generated_files/mcc.p1.d ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1.d ${OBJECTDIR}/mcc_generated_files/eusart2.p1.d ${OBJECTDIR}/mcc_generated_files/eusart1.p1.d ${OBJECTDIR}/mcc_generated_files/adc.p1.d ${OBJECTDIR}/mcc_generated_files/spi2.p1.d ${OBJECTDIR}/mcc_generated_files/tmr1.p1.d ${OBJECTDIR}/mcc_generated_files/spi1.p1.d ${OBJECTDIR}/mcc_generated_files/memory.p1.d ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d ${OBJECTDIR}/main.p1.d ${OBJECTDIR}/motion_sensor_custom.p1.d ${OBJECTDIR}/motion_sensor_spi.p1.d ${OBJECTDIR}/UART_MultiUART.p1.d
+ 
+ # Object Files
+-OBJECTFILES=${OBJECTDIR}/mcc_generated_files/ext_int.p1 ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1 ${OBJECTDIR}/mcc_generated_files/eusart2.p1 ${OBJECTDIR}/mcc_generated_files/eusart1.p1 ${OBJECTDIR}/mcc_generated_files/adc.p1 ${OBJECTDIR}/mcc_generated_files/spi2.p1 ${OBJECTDIR}/mcc_generated_files/tmr1.p1 ${OBJECTDIR}/mcc_generated_files/spi1.p1 ${OBJECTDIR}/mcc_generated_files/memory.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/motion_sensor_custom.p1 ${OBJECTDIR}/motion_sensor_spi.p1 ${OBJECTDIR}/UART_MultiUART.p1 ${OBJECTDIR}/mcc_generated_files/tmr2.p1 ${OBJECTDIR}/mcc_generated_files/epwm1.p1
++OBJECTFILES=${OBJECTDIR}/mcc_generated_files/ext_int.p1 ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1 ${OBJECTDIR}/mcc_generated_files/eusart2.p1 ${OBJECTDIR}/mcc_generated_files/eusart1.p1 ${OBJECTDIR}/mcc_generated_files/adc.p1 ${OBJECTDIR}/mcc_generated_files/spi2.p1 ${OBJECTDIR}/mcc_generated_files/tmr1.p1 ${OBJECTDIR}/mcc_generated_files/spi1.p1 ${OBJECTDIR}/mcc_generated_files/memory.p1 ${OBJECTDIR}/mcc_generated_files/tmr2.p1 ${OBJECTDIR}/mcc_generated_files/epwm1.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/motion_sensor_custom.p1 ${OBJECTDIR}/motion_sensor_spi.p1 ${OBJECTDIR}/UART_MultiUART.p1
+ 
+ # Source Files
+-SOURCEFILES=mcc_generated_files/ext_int.c mcc_generated_files/pin_manager.c mcc_generated_files/mcc.c mcc_generated_files/interrupt_manager.c mcc_generated_files/eusart2.c mcc_generated_files/eusart1.c mcc_generated_files/adc.c mcc_generated_files/spi2.c mcc_generated_files/tmr1.c mcc_generated_files/spi1.c mcc_generated_files/memory.c main.c motion_sensor_custom.c motion_sensor_spi.c UART_MultiUART.c mcc_generated_files/tmr2.c mcc_generated_files/epwm1.c
++SOURCEFILES=mcc_generated_files/ext_int.c mcc_generated_files/pin_manager.c mcc_generated_files/mcc.c mcc_generated_files/interrupt_manager.c mcc_generated_files/eusart2.c mcc_generated_files/eusart1.c mcc_generated_files/adc.c mcc_generated_files/spi2.c mcc_generated_files/tmr1.c mcc_generated_files/spi1.c mcc_generated_files/memory.c mcc_generated_files/tmr2.c mcc_generated_files/epwm1.c main.c motion_sensor_custom.c motion_sensor_spi.c UART_MultiUART.c
+ 
+ 
+ CFLAGS=
+@@ -181,6 +181,22 @@ ${OBJECTDIR}/mcc_generated_files/memory.p1: mcc_generated_files/memory.c  nbproj
+ 	@-${MV} ${OBJECTDIR}/mcc_generated_files/memory.d ${OBJECTDIR}/mcc_generated_files/memory.p1.d 
+ 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/memory.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+ 	
++${OBJECTDIR}/mcc_generated_files/tmr2.p1: mcc_generated_files/tmr2.c  nbproject/Makefile-${CND_CONF}.mk
++	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
++	@${RM} ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d 
++	@${RM} ${OBJECTDIR}/mcc_generated_files/tmr2.p1 
++	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -memi=wordwrite -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/mcc_generated_files/tmr2.p1 mcc_generated_files/tmr2.c 
++	@-${MV} ${OBJECTDIR}/mcc_generated_files/tmr2.d ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d 
++	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
++	
++${OBJECTDIR}/mcc_generated_files/epwm1.p1: mcc_generated_files/epwm1.c  nbproject/Makefile-${CND_CONF}.mk
++	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
++	@${RM} ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d 
++	@${RM} ${OBJECTDIR}/mcc_generated_files/epwm1.p1 
++	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -memi=wordwrite -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/mcc_generated_files/epwm1.p1 mcc_generated_files/epwm1.c 
++	@-${MV} ${OBJECTDIR}/mcc_generated_files/epwm1.d ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d 
++	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
++	
+ ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
+ 	@${MKDIR} "${OBJECTDIR}" 
+ 	@${RM} ${OBJECTDIR}/main.p1.d 
+@@ -213,22 +229,6 @@ ${OBJECTDIR}/UART_MultiUART.p1: UART_MultiUART.c  nbproject/Makefile-${CND_CONF}
+ 	@-${MV} ${OBJECTDIR}/UART_MultiUART.d ${OBJECTDIR}/UART_MultiUART.p1.d 
+ 	@${FIXDEPS} ${OBJECTDIR}/UART_MultiUART.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+ 	
+-${OBJECTDIR}/mcc_generated_files/tmr2.p1: mcc_generated_files/tmr2.c  nbproject/Makefile-${CND_CONF}.mk
+-	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
+-	@${RM} ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d 
+-	@${RM} ${OBJECTDIR}/mcc_generated_files/tmr2.p1 
+-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -memi=wordwrite -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/mcc_generated_files/tmr2.p1 mcc_generated_files/tmr2.c 
+-	@-${MV} ${OBJECTDIR}/mcc_generated_files/tmr2.d ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d 
+-	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+-	
+-${OBJECTDIR}/mcc_generated_files/epwm1.p1: mcc_generated_files/epwm1.c  nbproject/Makefile-${CND_CONF}.mk
+-	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
+-	@${RM} ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d 
+-	@${RM} ${OBJECTDIR}/mcc_generated_files/epwm1.p1 
+-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -memi=wordwrite -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/mcc_generated_files/epwm1.p1 mcc_generated_files/epwm1.c 
+-	@-${MV} ${OBJECTDIR}/mcc_generated_files/epwm1.d ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d 
+-	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+-	
+ else
+ ${OBJECTDIR}/mcc_generated_files/ext_int.p1: mcc_generated_files/ext_int.c  nbproject/Makefile-${CND_CONF}.mk
+ 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
+@@ -318,6 +318,22 @@ ${OBJECTDIR}/mcc_generated_files/memory.p1: mcc_generated_files/memory.c  nbproj
+ 	@-${MV} ${OBJECTDIR}/mcc_generated_files/memory.d ${OBJECTDIR}/mcc_generated_files/memory.p1.d 
+ 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/memory.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+ 	
++${OBJECTDIR}/mcc_generated_files/tmr2.p1: mcc_generated_files/tmr2.c  nbproject/Makefile-${CND_CONF}.mk
++	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
++	@${RM} ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d 
++	@${RM} ${OBJECTDIR}/mcc_generated_files/tmr2.p1 
++	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -memi=wordwrite -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/mcc_generated_files/tmr2.p1 mcc_generated_files/tmr2.c 
++	@-${MV} ${OBJECTDIR}/mcc_generated_files/tmr2.d ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d 
++	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
++	
++${OBJECTDIR}/mcc_generated_files/epwm1.p1: mcc_generated_files/epwm1.c  nbproject/Makefile-${CND_CONF}.mk
++	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
++	@${RM} ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d 
++	@${RM} ${OBJECTDIR}/mcc_generated_files/epwm1.p1 
++	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -memi=wordwrite -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/mcc_generated_files/epwm1.p1 mcc_generated_files/epwm1.c 
++	@-${MV} ${OBJECTDIR}/mcc_generated_files/epwm1.d ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d 
++	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
++	
+ ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
+ 	@${MKDIR} "${OBJECTDIR}" 
+ 	@${RM} ${OBJECTDIR}/main.p1.d 
+@@ -350,22 +366,6 @@ ${OBJECTDIR}/UART_MultiUART.p1: UART_MultiUART.c  nbproject/Makefile-${CND_CONF}
+ 	@-${MV} ${OBJECTDIR}/UART_MultiUART.d ${OBJECTDIR}/UART_MultiUART.p1.d 
+ 	@${FIXDEPS} ${OBJECTDIR}/UART_MultiUART.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+ 	
+-${OBJECTDIR}/mcc_generated_files/tmr2.p1: mcc_generated_files/tmr2.c  nbproject/Makefile-${CND_CONF}.mk
+-	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
+-	@${RM} ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d 
+-	@${RM} ${OBJECTDIR}/mcc_generated_files/tmr2.p1 
+-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -memi=wordwrite -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/mcc_generated_files/tmr2.p1 mcc_generated_files/tmr2.c 
+-	@-${MV} ${OBJECTDIR}/mcc_generated_files/tmr2.d ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d 
+-	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/tmr2.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+-	
+-${OBJECTDIR}/mcc_generated_files/epwm1.p1: mcc_generated_files/epwm1.c  nbproject/Makefile-${CND_CONF}.mk
+-	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
+-	@${RM} ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d 
+-	@${RM} ${OBJECTDIR}/mcc_generated_files/epwm1.p1 
+-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -memi=wordwrite -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/mcc_generated_files/epwm1.p1 mcc_generated_files/epwm1.c 
+-	@-${MV} ${OBJECTDIR}/mcc_generated_files/epwm1.d ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d 
+-	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/epwm1.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+-	
+ endif
+ 
+ # ------------------------------------------------------------------------------------
+@@ -411,7 +411,7 @@ endif
+ # Enable dependency checking
+ .dep.inc: .depcheck-impl
+ 
+-DEPFILES=$(shell "${PATH_TO_IDE_BIN}"mplabwildcard ${POSSIBLE_DEPFILES})
++DEPFILES=$(shell mplabwildcard ${POSSIBLE_DEPFILES})
+ ifneq (${DEPFILES},)
+ include ${DEPFILES}
+ endif
+diff --git a/nbproject/Makefile-genesis.properties b/nbproject/Makefile-genesis.properties
+index 25e4f3e..ac42d9a 100644
+--- a/nbproject/Makefile-genesis.properties
++++ b/nbproject/Makefile-genesis.properties
+@@ -1,9 +1,9 @@
+ #
+-#Wed May 29 10:38:44 CST 2019
+-default.languagetoolchain.dir=/opt/microchip/xc8/v2.05/bin
+-configurations-xml=040650070e171050d511e1392b257995
++#Tue Jun 11 17:26:25 CST 2019
++default.languagetoolchain.dir=C\:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\bin
++configurations-xml=7178148502d9e27b5f8a71cac06cde1b
+ com-microchip-mplab-nbide-embedded-makeproject-MakeProject.md5=37eccb08230908d044ad3fe14e24ea9a
+ default.languagetoolchain.version=2.05
+-host.platform=linux
++host.platform=windows
+ conf.ids=default
+ default.com-microchip-mplab-nbide-toolchainXC8-XC8LanguageToolchain.md5=5fdf03d5ed941dd849268ab6ecd38ef0
+diff --git a/nbproject/Makefile-local-default.mk b/nbproject/Makefile-local-default.mk
+index 2f6e812..83344db 100644
+--- a/nbproject/Makefile-local-default.mk
++++ b/nbproject/Makefile-local-default.mk
+@@ -14,23 +14,24 @@
+ # You can invoke make with the values of the macros:
+ # $ makeMP_CC="/opt/microchip/mplabc30/v3.30c/bin/pic30-gcc" ...  
+ #
+-PATH_TO_IDE_BIN=/home/microchip/mplabx/mplab_platform/platform/../mplab_ide/modules/../../bin/
++SHELL=cmd.exe
++PATH_TO_IDE_BIN=C:/Program Files (x86)/Microchip/MPLABX/v5.20/mplab_platform/platform/../mplab_ide/modules/../../bin/
+ # Adding MPLAB X bin directory to path.
+-PATH:=/home/microchip/mplabx/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
++PATH:=C:/Program Files (x86)/Microchip/MPLABX/v5.20/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
+ # Path to java used to run MPLAB X when this makefile was created
+-MP_JAVA_PATH="/home/microchip/mplabx/sys/java/jre1.8.0_181/bin/"
++MP_JAVA_PATH="C:\Program Files (x86)\Microchip\MPLABX\v5.20\sys\java\jre1.8.0_181/bin/"
+ OS_CURRENT="$(shell uname -s)"
+-MP_CC="/opt/microchip/xc8/v2.05/bin/xc8-cc"
++MP_CC="C:\Program Files (x86)\Microchip\xc8\v2.05\bin\xc8-cc.exe"
+ # MP_CPPC is not defined
+ # MP_BC is not defined
+-MP_AS="/opt/microchip/xc8/v2.05/bin/xc8-cc"
+-MP_LD="/opt/microchip/xc8/v2.05/bin/xc8-cc"
+-MP_AR="/opt/microchip/xc8/v2.05/bin/xc8-ar"
+-DEP_GEN=${MP_JAVA_PATH}java -jar "/home/microchip/mplabx/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
+-MP_CC_DIR="/opt/microchip/xc8/v2.05/bin"
++MP_AS="C:\Program Files (x86)\Microchip\xc8\v2.05\bin\xc8-cc.exe"
++MP_LD="C:\Program Files (x86)\Microchip\xc8\v2.05\bin\xc8-cc.exe"
++MP_AR="C:\Program Files (x86)\Microchip\xc8\v2.05\bin\xc8-ar.exe"
++DEP_GEN=${MP_JAVA_PATH}java -jar "C:/Program Files (x86)/Microchip/MPLABX/v5.20/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
++MP_CC_DIR="C:\Program Files (x86)\Microchip\xc8\v2.05\bin"
+ # MP_CPPC_DIR is not defined
+ # MP_BC_DIR is not defined
+-MP_AS_DIR="/opt/microchip/xc8/v2.05/bin"
+-MP_LD_DIR="/opt/microchip/xc8/v2.05/bin"
+-MP_AR_DIR="/opt/microchip/xc8/v2.05/bin"
++MP_AS_DIR="C:\Program Files (x86)\Microchip\xc8\v2.05\bin"
++MP_LD_DIR="C:\Program Files (x86)\Microchip\xc8\v2.05\bin"
++MP_AR_DIR="C:\Program Files (x86)\Microchip\xc8\v2.05\bin"
+ # MP_BC_DIR is not defined
+diff --git a/nbproject/configurations.xml b/nbproject/configurations.xml
+index 3ada278..3b4a37e 100644
+--- a/nbproject/configurations.xml
++++ b/nbproject/configurations.xml
+@@ -73,7 +73,7 @@
+         <platformTool>PICkit3PlatformTool</platformTool>
+         <languageToolchain>XC8</languageToolchain>
+         <languageToolchainVersion>2.05</languageToolchainVersion>
+-        <platform>2</platform>
++        <platform>3</platform>
+       </toolsSet>
+       <packs>
+         <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.0.53"/>
+@@ -103,11 +103,16 @@
+         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+       </makeCustomizationType>
+       <HI-TECH-COMP>
++        <property key="additional-warnings" value="true"/>
+         <property key="asmlist" value="true"/>
++        <property key="default-bitfield-type" value="true"/>
++        <property key="default-char-type" value="true"/>
+         <property key="define-macros" value=""/>
+         <property key="disable-optimizations" value="false"/>
+         <property key="extra-include-directories" value=""/>
+         <property key="favor-optimization-for" value="-speed,+space"/>
++        <property key="garbage-collect-data" value="true"/>
++        <property key="garbage-collect-functions" value="true"/>
+         <property key="identifier-length" value="255"/>
+         <property key="local-generation" value="false"/>
+         <property key="operation-mode" value="free"/>
+@@ -115,14 +120,14 @@
+         <property key="optimization-assembler" value="true"/>
+         <property key="optimization-assembler-files" value="true"/>
+         <property key="optimization-debug" value="false"/>
+-        <property key="optimization-global" value="true"/>
+         <property key="optimization-invariant-enable" value="false"/>
+         <property key="optimization-invariant-value" value="16"/>
+         <property key="optimization-level" value="9"/>
+-        <property key="optimization-set" value="default"/>
+         <property key="optimization-speed" value="false"/>
+         <property key="optimization-stable-enable" value="false"/>
++        <property key="pack-struct" value="true"/>
+         <property key="preprocess-assembler" value="true"/>
++        <property key="short-enums" value="true"/>
+         <property key="undefine-macros" value=""/>
+         <property key="use-cci" value="false"/>
+         <property key="use-iar" value="false"/>
+@@ -146,12 +151,15 @@
+         <property key="code-model-rom" value=""/>
+         <property key="create-html-files" value="false"/>
+         <property key="data-model-ram" value=""/>
+-        <property key="data-model-size-of-double" value="24"/>
+-        <property key="data-model-size-of-float" value="24"/>
++        <property key="data-model-size-of-double" value="32"/>
++        <property key="data-model-size-of-double-gcc" value="no-short-double"/>
++        <property key="data-model-size-of-float" value="32"/>
++        <property key="data-model-size-of-float-gcc" value="no-short-float"/>
+         <property key="display-class-usage" value="false"/>
+         <property key="display-hex-usage" value="false"/>
+         <property key="display-overall-usage" value="true"/>
+         <property key="display-psect-usage" value="false"/>
++        <property key="extra-lib-directories" value=""/>
+         <property key="fill-flash-options-addr" value=""/>
+         <property key="fill-flash-options-const" value=""/>
+         <property key="fill-flash-options-how" value="0"/>
+@@ -161,14 +169,17 @@
+         <property key="fill-flash-options-what" value="0"/>
+         <property key="format-hex-file-for-download" value="false"/>
+         <property key="initialize-data" value="true"/>
++        <property key="input-libraries" value="libm"/>
+         <property key="keep-generated-startup.as" value="false"/>
+         <property key="link-in-c-library" value="true"/>
++        <property key="link-in-c-library-gcc" value=""/>
+         <property key="link-in-peripheral-library" value="true"/>
+         <property key="managed-stack" value="false"/>
+         <property key="opt-xc8-linker-file" value="false"/>
+         <property key="opt-xc8-linker-link_startup" value="false"/>
+         <property key="opt-xc8-linker-serial" value=""/>
+         <property key="program-the-device-with-default-config-words" value="true"/>
++        <property key="remove-unused-sections" value="true"/>
+       </HI-TECH-LINK>
+       <ICD4Tool>
+         <property key="AutoSelectMemRanges" value="auto"/>
+@@ -219,7 +230,7 @@
+         <property key="ToolFirmwareFilePath"
+                   value="Press to browse for a specific firmware version"/>
+         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+-        <property key="firmware.download.all" value="false"/>
++        <property key="debugoptions.useswbreakpoints" value="false"/>
+         <property key="hwtoolclock.frcindebug" value="false"/>
+         <property key="memories.aux" value="false"/>
+         <property key="memories.bootflash" value="true"/>
+@@ -661,11 +672,16 @@
+       </Simulator>
+       <XC8-config-global>
+         <property key="advanced-elf" value="true"/>
++        <property key="gcc-opt-driver-new" value="true"/>
++        <property key="gcc-opt-std" value="-std=c99"/>
++        <property key="gcc-output-file-format" value="dwarf-3"/>
++        <property key="omit-pack-options" value="false"/>
+         <property key="output-file-format" value="-mcof,+elf"/>
+         <property key="stack-size-high" value="auto"/>
+         <property key="stack-size-low" value="auto"/>
+         <property key="stack-size-main" value="auto"/>
+         <property key="stack-type" value="compiled"/>
++        <property key="user-pack-device-support" value=""/>
+       </XC8-config-global>
+     </conf>
+   </confs>
+diff --git a/nbproject/private/configurations.xml b/nbproject/private/configurations.xml
+index 448d080..7a58c7f 100644
+--- a/nbproject/private/configurations.xml
++++ b/nbproject/private/configurations.xml
+@@ -4,8 +4,8 @@
+   <defaultConf>0</defaultConf>
+   <confs>
+     <conf name="default" type="2">
+-      <platformToolSN>:=MPLABComm-USB-Microchip:=&lt;vid>04D8:=&lt;pid>900A:=&lt;rev>0002:=&lt;man>Microchip Technology Inc.:=&lt;prod>PICkit 3:=&lt;sn>BUR143670580:=&lt;drv>x:=&lt;xpt>h:=end</platformToolSN>
+-      <languageToolchainDir>/opt/microchip/xc8/v2.05/bin</languageToolchainDir>
++      <platformToolSN>:=MPLABComm-USB-Microchip:=&lt;vid>04D8:=&lt;pid>900A:=&lt;rev>0002:=&lt;man>Microchip Technology Inc.:=&lt;prod>PICkit 3:=&lt;sn>BUR162473365:=&lt;drv>x:=&lt;xpt>h:=end</platformToolSN>
++      <languageToolchainDir>C:\Program Files (x86)\Microchip\xc8\v2.05\bin</languageToolchainDir>
+       <mdbdebugger version="1">
+         <placeholder1>place holder 1</placeholder1>
+         <placeholder2>place holder 2</placeholder2>
+diff --git a/nbproject/private/private.xml b/nbproject/private/private.xml
+index c01f1b5..f9febf6 100644
+--- a/nbproject/private/private.xml
++++ b/nbproject/private/private.xml
+@@ -3,8 +3,8 @@
+     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+         <group>
+-            <file>file:/home/wade/MPLABXProjects/PIC18LF46K22_imobile.X/motion_sensor_custom.c</file>
+-            <file>file:/home/wade/MPLABXProjects/PIC18LF46K22_imobile.X/main.c</file>
++            <file>file:/F:/Nel's%20Temp%20Folder/0C.%20Neil/MCU/Microchip/Project/PIC18LF46K22_imobile.X/motion_sensor_spi.h</file>
++            <file>file:/F:/Nel's%20Temp%20Folder/0C.%20Neil/MCU/Microchip/Project/PIC18LF46K22_imobile.X/nbproject/Makefile-default.mk</file>
+         </group>
+     </open-files>
+ </project-private>
+-- 
+2.22.0.windows.1
+
