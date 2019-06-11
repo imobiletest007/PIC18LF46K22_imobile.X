@@ -147,8 +147,8 @@ static void UART_Show_Version(void)
 
 int last_sensor = 0, delay_count=0;
 
-uint8_t max_mode = 2, mode = 0;
-uint8_t last_light = 0;
+uint8_t max_mode = 3, mode = 0;
+uint8_t last_light = 0, flash_mode = 0;
 void g_sensor() {
     if (acc_sensor_get_acc()) {
         acc_sensor_read_status();
@@ -165,26 +165,40 @@ void g_sensor() {
             last_sensor = (last_sensor*3 + dx+dy+dz) / 4;
 
             switch(mode) {
-                case 0: { // ????????????
+                case 0: { // 亮度與g-sensor 成正相關
                     pwm_light(last_sensor);
+                    flash_mode = 0;
                     break;
                 }
-                case 1: { // ?????????????????
+                case 1:
+                case 2: { // 有晃直接最亮，沒晃會慢慢暗
                     if (last_sensor > 0) {
                         last_light = 10;
-                        delay_count = 120;
-                    } else {
+                        flash_mode = 0;
+                        delay_count = 40*3; // 等３秒
+                    } else if (!flash_mode) {
                         --delay_count;
                         if (delay_count == 0) {
-                            delay_count = 20;
-                            if (last_light > 0)
+                            delay_count = 20; // 每0.5秒變暗一點
+                            if (last_light > 0) {
                                 --last_light;
+                                if (!last_light) flash_mode = 1;
+                            }
+                        }
+                    }
+                    if (mode == 2) {
+                        if (flash_mode == 1) {
+                            ++last_light;
+                            if (last_light>=10) flash_mode = 2;
+                        } else if (flash_mode == 2) {
+                            --last_light;
+                            if (last_light == 0) flash_mode = 1;
                         }
                     }
                     pwm_light(last_light);
                 }
             }
-            if (!pause) printf("sensor = %d (%d, %d, %d)\r\n", last_sensor, dx, dy, dz);
+//            printf("sensor = %d (%d, %d, %d)\r\n", last_sensor, dx, dy, dz);
         }
     }
 }
@@ -206,17 +220,18 @@ void main(void)
     while (1) {
         UART_cmd();
         if (buttonUpF == 1) {
+            pause = 0;
             buttonUpF = 0;
             mode = (mode+1)%max_mode;
             printf("ButtonUp mode=%d\r\n", mode);
         }
         if (buttonDnF == 1) {
             pause = !pause;
+            if (pause) pwm_light(0);
             buttonDnF = 0;
-            mode = (mode+max_mode-1)%max_mode;
             printf("ButtonDn mode=%d\r\n", mode);
         }
-        g_sensor();
+        if (!pause) g_sensor();
     }
 }
 void putrs2USART(const char *data)
