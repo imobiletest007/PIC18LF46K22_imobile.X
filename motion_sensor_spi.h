@@ -21,6 +21,7 @@
 
 #ifndef MOTION_SENSOR_SPI_H
 #define MOTION_SENSOR_SPI_H
+#include <stdint.h>
 //#define a0                LATCbits.LATC0
 //#define res               LATCbits.LATC1
 //#define cs                LATCbits.LATC2
@@ -49,7 +50,8 @@
 #endif
 
 #define uint16_t unsigned int
-#define uint8_t unsigned char
+//#define uint8_t unsigned char
+
 void MS_Delay(uint16_t value);
 void motion_senosr_interface_init(void);
 void motion_sensor_send_byte(uint8_t send_byte);

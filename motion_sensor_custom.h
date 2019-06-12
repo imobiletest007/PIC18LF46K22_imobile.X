@@ -20,8 +20,10 @@
  ****************************************************************************/
 #ifndef _MOTION_SENSOR_CUSTOM_H
 #define _MOTION_SENSOR_CUSTOM_H
+#include <stdint.h>
+
 #define uint16_t unsigned int
-#define uint8_t unsigned char
+//#define uint8_t unsigned char
 /* Gsensor slave address and read write bit */
 #define MOTION_SENSOR_ADDRESS    		0x1F 	// when "PIN-ADDR" connect to "IO_VDD"
 // #define MOTION_SENSOR_ADDRESS    	0x1E 	// when "PIN-ADDR" connect to "GND"

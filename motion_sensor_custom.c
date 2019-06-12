@@ -20,7 +20,7 @@
  ****************************************************************************/
 #define MOTION_SENSOR_SUPPORT
 #define uint16_t unsigned int
-#define uint8_t unsigned char
+//#define uint8_t unsigned char
 #ifdef MOTION_SENSOR_SUPPORT
 
 #include "motion_sensor_custom.h"   
